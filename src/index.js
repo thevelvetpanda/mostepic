@@ -1,4 +1,4 @@
-// Force HTTPS for mostepic.vorpal.digital, then serve the static site.
+// Force HTTPS for mostepic.vorpal.digital, keep it out of search engines, then serve the static site.
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -9,6 +9,7 @@ export default {
     const response = await env.ASSETS.fetch(request);
     const headers = new Headers(response.headers);
     headers.set("Strict-Transport-Security", "max-age=31536000");
+    headers.set("X-Robots-Tag", "noindex, nofollow");
     return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
   },
 };
